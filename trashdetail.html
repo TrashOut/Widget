@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+
+    <!-- Meta definition -->
+    <meta charset="utf-8" />
+
+    <!-- Font -->
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,700" rel="stylesheet">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="vendor/fancybox/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="vendor/fancybox/helpers/jquery.fancybox-buttons.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="assets/css/normalize.css">
+    <link rel="stylesheet" href="assets/css/components.css">
+    <link rel="stylesheet" href="assets/css/app.css">
+    <link rel="stylesheet" href="assets/css/adjustments.css">
+
+    <!-- JS -->
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script type="text/javascript" src="vendor/moment-with-locales.js"></script>
+    <script type="text/javascript" src="config/app.js"></script>
+    <script type="text/javascript" src="vendor/libs.js"></script>
+    <script type="text/javascript" src="vendor/underscore-min.js"></script>
+    <script type="text/javascript" src="vendor/i18n.js"></script>
+    <script type="text/javascript" src="loaders/trashdetail.js"></script>
+    <!-- JS - BULK DATA - for testing -->
+    <script type="text/javascript" src="vendor/trash_data.js"></script>
+  </head>
+  <body class="iframe-detail">
+
+    <div id="trash-map" class="widget detail-visible">
+      <iframe id="eventdetail-widget" class="hidden-right" src="" frameBorder="0" style="width:100%;position:absolute; z-index: 5000;"></iframe>
+      <div id="trash-map-detail">
+				<h1 class="widget-heading"></h1>
+        <div id="close-detail"></div>
+        <div class="panels-wrapper"></div>
+      </div>
+      <div id="map"></div>
+      <div class="spinner hide"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>
+    </div>
+
+  </body>
+</html>

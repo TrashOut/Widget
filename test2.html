@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="https://maps.google.com/maps/api/js?key=AIzaSyBQa-0pghBXFAOjvvWGfIieQcTvMAefNPY"></script>
+    <script src="https://googlemaps.github.io/js-marker-clusterer/src/markerclusterer.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="config/app.js"></script>
+    <script src="vendor/libs.js"></script>
+    <script src="https://cdn.jsdelivr.net/gmap3/7.1.0/gmap3.min.js"></script>
+    <script src="vendor/underscore-min.js"></script>
+    <script src="vendor/geomodel.js"></script>
+    <script src="vendor/i18n.js"></script>
+
+    <script>
+
+
+      alert($.inArray('stillHere', ['updateNeeded']));
+
+      var x = [];
+
+
+      //console.log(typeof x[2] != 'undefined');
+      //console.log(typeof x[2]['3'] != 'undefined');
+
+      if(typeof x[2] == 'undefined'){
+        // push
+        console.log(3);
+      }else if(typeof x[2]['3'] == 'undefined'){
+        // push
+        console.log(4);
+      }
+
+
+
+  var TRASHLISTDATA2 = [
+        {
+          "lng": 11.25,
+          "status": "cleaned",
+          "id": 4999184298016768,
+          "lat": 50.625
+        },
+        {
+          "lng": -11.25,
+          "status": "cleaned",
+          "id": 5312269097369600,
+          "lat": 50.625
+        },
+        {
+          "lng": 11.25,
+          "status": "cleaned",
+          "id": 4737368355504128,
+          "lat": 39.375
+        },
+        {
+          "lng": 33.75,
+          "status": "cleaned",
+          "id": 4737368355504128,
+          "lat": 50.625
+        },
+        {
+          "lng": -11.25,
+          "status": "cleaned",
+          "id": 4737368355504128,
+          "lat": 39.375
+        },
+        {
+          "lng": 33.75,
+          "status": "cleaned",
+          "id": 4737368355504128,
+          "lat": 61.875
+        },
+        {
+          "lng": 33.75,
+          "status": "cleaned",
+          "id": 4737368355504128,
+          "lat": 39.375
+        },
+      ];
+    </script>
+
+
+  </head>
+  <body>
+    <div id="trashmap" style="width:100%;height:280px;"></div>
+
+
+    <script>
+      var imageUrl = 'https://maps.google.com/mapfiles/marker_green.png';
+      var markerImage = new google.maps.MarkerImage(imageUrl, new google.maps.Size(24, 32));
+
+      $map = $('#trashmap').gmap3({center: [46.578498, 2.457275], zoom: 5});
+
+        $.each(TRASHLISTDATA2, function (obj, marker) {
+
+          $map.marker({
+            position: [marker.lat, marker.lng],
+            icon: 'https://maps.google.com/mapfiles/marker_green.png'
+          });
+
+        });
+
+    </script>
+
+  </body>
+</html>

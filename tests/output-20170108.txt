@@ -1,0 +1,71 @@
+
+
+  $.fn.getQueryVariable - Get query varibale from given URL or from window.location object
+    Basic test
+      ✓ should extract and return single value from query
+      ✓ should extract and return single value from query (case-sensitive)
+      ✓ should return null when variable not exists in query
+
+  $.fn.getQueryObject - Get complete query from given URL as an object
+    Basic test
+      ✓ should have object structure
+      ✓ should have all properties
+      ✓ should have all properties with expected values
+
+  $.fn.isEmpty - Test an javascript object for empty / undefined / null / nil value
+    Basic test
+      ✓ test empty string
+      ✓ test non-object value - such as number (arguably could be a TypeError)
+      ✓ test empty array
+      ✓ test empty object
+      ✓ test non object, but with empty array
+      ✓ test not empty string
+      ✓ test not empty array
+      ✓ test not empty simple object
+      ✓ test not empty scalar object
+
+  $.fn.arrayIntersect - Provide intersecting of two arrays
+    Basic test
+      ✓ simple array of int intersection [1,2,3] and [2,3,4] ~> [2,3]
+      ✓ simple array of string intersection ['apple','raspberry','pear'] and ['apple','pear','pinapple'] ~> ['apple', 'pear']
+      ✓ empty intersection [1,2,3] and [4,5,6] ~> []
+
+  $.fn.round - Round number to given precision
+    Basic test - round to 0 decimals
+      ✓ small number - round down
+      ✓ small number - round up
+      ✓ large number - round down
+      ✓ large number - round up
+    Basic test - with precision
+      ✓ large number with precision - round down
+      ✓ large number with precision - round up
+    Extended test - precision scale
+      ✓ count of precision numbers in return value
+
+  $.fn.humanRound - Round number to better human readable format
+    Basic test - all types from 0 - 100 000 000
+      ✓ small numbers - without thousand separator
+      ✓ small numbers - without thousand separator with +
+      ✓ large numbers - with thousand separator and with +
+
+  $.fn.customCalculator - Special calculation method for MarkerClusterer for Google Maps v3 class, this can provide different output values
+    Basic test - based on $.fn.humanRound (reverse check)
+      ✓ result should have both properties - text, index
+      ✓ check text - small number and mixed values, reverse check with $.fn.humanRound 
+      ✓ check text - large number and mixed values, reverse check with $.fn.humanRound
+    Extended test - based on $.fn.humanRound and $.fn.getClusterIcon (reverse check)
+      ✓ check text and index - status: cleaned
+      ✓ check text and index - status: stillHere
+      ✓ check text and index - status: lessMore
+      ✓ check text and index - status: cleaned, lessMore, stillHere
+      ✓ check text and index - status: cleaned, lessMore
+      ✓ check text and index - status: lessMore, stillHere
+      ✓ check text and index - status: stillHere, cleaned
+
+  $.fn.groupByAndSum - Grouping array of Markers via data.status value and make a sum
+    Basic test
+      ✓ complete test based on random values
+
+
+  39 passing (69ms)
+

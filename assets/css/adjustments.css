@@ -1,0 +1,345 @@
+/**
+ * TrashOut is an environmental project that teaches people how to recycle 
+ * and showcases the worst way of handling waste - illegal dumping. All you need is a smart phone.
+ *
+ *
+ * There are 10 types of programmers - those who are helping TrashOut and those who are not.
+ * Clean up our code, so we can clean up our planet. 
+ * Get in touch with us: help@trashout.ngo
+ *
+ * Copyright 2017 TrashOut, n.f.
+ *
+ * This file is part of the TrashOut project.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
+ */
+
+.photo-header {
+	position: relative;
+}
+
+.trash-status {
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+	height: 65px;
+	background: -moz-linear-gradient(top,  rgba(255,255,255,0) 0%, rgba(0,0,0,1) 100%);
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,0) 0%,rgba(0,0,0,1) 100%);
+	background: linear-gradient(to bottom,  rgba(255,255,255,0) 0%,rgba(0,0,0,1) 100%);
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#000000',GradientType=0 );
+}
+
+.trash-status h3 {
+	height: 40px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: 0px 0px;
+	background-size: 35px 35px;
+	position: absolute;
+	top: 5px;
+	left: 10px;
+	color: #FFFFFF !important;
+	font-weight: 600;
+	padding-left: 50px;
+}
+
+.status-reported h3 {background-image: url('../images/icons/ico_reported.png');}
+.status-cleaned h3 {background-image: url('../images/icons/ico_cleaned.png');}
+.status-updated h3 {background-image: url('../images/icons/ico_updated.png');}
+.status-unknown h3 {background-image: url('../images/icons/ico_unknown.png');}
+
+.trash-status h3 span {
+	color: #CFC9C7;
+	font-weight: 300;
+}
+
+#trash-map-detail .user h3.ico {
+	line-height: 30px;
+	background-size: 30px 30px;
+	background-color: transparent;
+	background-repeat: no-repeat;
+	background-position: top left;
+}
+
+.ico-updated {background-image: url('../images/icons/ico_updated.png');}
+.ico-unknown {background-image: url('../images/icons/ico_unknown.png');}
+.ico-reported {background: url('../images/icons/ico_reported.png');}
+.ico-cleaned {background: url('../images/icons/ico_cleaned.png');}
+
+#trash-map-detail .user .user-ago.updated span {
+	color: #EA6B2D;
+}
+
+.user-ago {
+	color: #9DADB7;
+}
+
+.ico-organic::after {
+	background-image: url('../images/icons/organic.png');
+}
+
+#trash-map-detail .ico-type {
+	width: 40%;
+	text-align: left;
+}
+
+#trash-map-detail .types-small:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+
+#trash-map-detail .types-small .ico-type {
+  padding: 0px;
+  margin: 0px;
+  margin-right: 5px;
+  width: 24px;
+  height: 24px;
+  display: block;
+  float: left;
+  position: relative;
+}
+
+#trash-map-detail .types-small .ico::after {
+  top: 0px;
+  left: 0px;
+  background-position: 0px -24px;
+  background-size: 100%;
+}
+
+#trash-map-detail .types-small .ico-type:after {
+  width: 24px;
+  height: 24px;
+  top: 0px;
+  left: 0px;
+  margin: 0px;
+  padding: 0px;
+  position: absolute;
+}
+
+.grey-box {
+	padding: 0 12px 12px;
+}
+
+.iframe-detail {
+	margin: 0px;
+	background-color: #efefef;
+	height: 100%;
+}
+
+.iframe-detail #trash-map-detail {
+	padding: 10px;
+	height: 100%;
+	height: 100vh;
+/* 	margin-top: 58px; */
+/* 	top: 0px; */
+}
+
+.iframe-detail #trash-map.detail-visible .panels-wrapper {
+	background-color: #efefef;
+}
+
+iframe {
+	border: none !important;
+}
+
+#trash-map iframe {
+  margin-top: 3px;
+}
+
+#trash-map iframe,
+#trash-map #trashdetail-widget {
+	top: 0px;
+	right: 0px;
+	left: auto;
+	height: 100%;
+	-webkit-transform: translateX(0%);
+	-ms-transform: translateX(0%);
+	transform: translateX(0%);
+	-webkit-transition: all 600ms ease-out;
+	-moz-transition: all 600ms ease-out;
+	-o-transition: all 600ms ease-out;
+	-ms-transition: all 600ms ease-out;
+	transition: all 600ms ease-out;
+}
+
+#trash-map iframe.hidden-right,
+#trash-map #trashdetail-widget.hidden-right {
+	-webkit-transform: translateX(100%);
+	-ms-transform: translateX(100%);
+	transform: translateX(100%);
+}
+
+#trash-map {
+	overflow-x: hidden;
+}
+
+.iframe-detail #trash-map {
+	height: 100%;
+	height: 100vh;
+}
+
+/* rotate x */
+
+#close-detail {
+  -webkit-transition: -webkit-transform .4s ease-in-out;
+  transition: transform .4s ease-in-out;
+}
+#close-detail:hover {
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.iframe-detail #close-detail:hover {
+  -moz-transform: rotate(0deg);
+  -ms-transform: rotate(0deg);
+  -o-transform: rotate(0deg);
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.widget input[type="checkbox"].special + label::after {
+  background-color: transparent;
+}
+
+.widget input[type="checkbox"].special:checked + label.ico-household::after, .widget input[type="checkbox"].special:checked + label.ico-domestic::after, #trash-map .ico-type.ico-domestic::after, #sortable.list .ico-type.ico-domestic::after {background-color: #B88854;}
+.widget input[type="checkbox"].special:checked + label.ico-automotive::after, #trash-map .ico-type.ico-automotive::after, #sortable.list .ico-type.ico-automotive::after {background-color: #567980;}
+.widget input[type="checkbox"].special:checked + label.ico-construction::after, #trash-map .ico-type.ico-construction::after, #sortable.list .ico-type.ico-construction::after {background-color: #FF904E;}
+.widget input[type="checkbox"].special:checked + label.ico-plastic::after, #trash-map .ico-type.ico-plastic::after, #sortable.list .ico-type.ico-plastic::after {background-color: #6DBAE1;}
+.widget input[type="checkbox"].special:checked + label.ico-electronic::after, #trash-map .ico-type.ico-electronic::after, #sortable.list .ico-type.ico-electronic::after {background-color: #35567B;}
+.widget input[type="checkbox"].special:checked + label.ico-organic::after, #trash-map .ico-type.ico-organic::after, #sortable.list .ico-type.ico-organic::after {background-color: #80A920;}
+.widget input[type="checkbox"].special:checked + label.ico-metal::after, #trash-map .ico-type.ico-metal::after, #sortable.list .ico-type.ico-metal::after {background-color: #D1D1D1;}
+.widget input[type="checkbox"].special:checked + label.ico-liquid::after, #trash-map .ico-type.ico-liquid::after, #sortable.list .ico-type.ico-liquid::after {background-color: #E0DB39;}
+.widget input[type="checkbox"].special:checked + label.ico-dangerous::after, #trash-map .ico-type.ico-dangerous::after, #sortable.list .ico-type.ico-dangerous::after {background-color: #FF4444;}
+.widget input[type="checkbox"].special:checked + label.ico-dead-animals::after, #trash-map .ico-type.ico-animals::after, #sortable.list .ico-type.ico-animals::after {background-color: #C2660B;}
+.widget input[type="checkbox"].special:checked + label.ico-deadAnimals::after, #trash-map .ico-type.ico-deadAnimals::after, #sortable.list .ico-type.ico-deadAnimals::after {background-color: #C2660B;}
+.widget input[type="checkbox"].special:checked + label.ico-glass::after, #trash-map .ico-type.ico-glass::after, #sortable.list .ico-type.ico-glass::after {background-color: #C2660B;}
+
+#trash-map.detail-visible h1 {
+  background-color: #5f5d5e;
+}
+
+#trash-map.detail-visible #trash-map-detail.event-detail-open {
+	overflow-y: hidden !important;
+	max-height: 99vh !important;
+	height: auto !important;
+}
+
+.iframe-detail h1 {
+/* 	position: fixed; */
+	z-index: 200;
+/* 	width: 100%; */
+	position: static;
+	margin-bottom: 10px !important;
+}
+
+.iframe-detail #close-detail {
+	position: absolute;
+	right: 20px;
+	top: 18px;
+	left: auto;
+	z-index: 201;
+}
+
+.iframe-detail #trash-map.detail-visible h1 {
+  background-color: #8cc947;
+}
+
+#sortable.list .ico-type {
+  margin: 0px 0px 10px 0px!important;
+  min-width: 80px !important;
+  float: none !important;
+  text-align: center !important;
+  width: 15% !important;
+}
+
+#sortable.list .ico-types-wrapper {
+  display: inline-block;
+  width: 85%;
+  position: relative;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  float: left;
+  margin-left: 70px;
+  padding-left: 2px;
+}
+
+#sortable.list .ico-types-wrapper::before {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  height: 50px;
+  width: 2px;
+  background-color: #cecece;
+}
+
+#sortable.list .list-item .info .ico:nth-of-type(1) {
+  width: 18%;
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0px;
+  margin-left: -3%;
+}
+
+.dumps-list .country a {
+  color: #000000;
+}
+
+.dumps-list .country a:hover {
+  text-decoration: none;
+}
+
+.spinner.fixed-spinner {
+  position: fixed !important;
+}
+
+.spinner-overlay {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  background-color: rgba(255, 255, 255, 0.6);
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+}
+
+#sortable .status .status-reported,
+#sortable .status .status-updated,
+#sortable .status .status-unknown,
+#sortable .status .status-cleaned {
+  width: 53px;
+  height: 53px;
+  background-color: transparent;
+  background-position: top left;
+  background-size: 53px auto;
+  background-repeat: no-repeat;
+  padding-top: 60px;
+  margin-bottom: 10px;
+}
+
+#sortable .status .status-reported {background-image: url('../images/icons/ic_list_reported.png');}
+#sortable .status .status-unknown {background-image: url('../images/icons/ic_list_unknown.png');}
+#sortable .status .status-updated {background-image: url('../images/icons/ic_list_updated.png');}
+#sortable .status .status-cleaned {background-image: url('../images/icons/ic_list_cleaned.png');}
+
+small {
+  font-size: 13px;
+}
