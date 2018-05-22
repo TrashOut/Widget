@@ -320,8 +320,7 @@
         options = $.extend {}, cfg,
           title: title,
           legend:
-            position: 'bottom'
-            alignment: 'center'
+            position: 'right'
 
         chart = new (google.visualization.PieChart)(document.getElementById(id))
         chart.draw data, options

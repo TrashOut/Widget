@@ -1,27 +1,27 @@
 /**
-Â *Â TrashOut is an environmental project that teaches people how to recycleÂ 
-Â * and showcases the worst way of handling waste - illegal dumping.Â All you need is a smart phone.
-Â *
-Â *
-Â *Â There are 10 types of programmers - those who are helping TrashOut and those who are not.
-Â *Â Clean up our code, so we can clean up our planet.Â 
-Â * Get in touch with us: help@trashout.ngo
-Â *
-Â * Copyright 2017 TrashOut, n.f.
-Â *
-Â * This file is part of the TrashOut project.
-Â *
-Â * This program is free software; you can redistribute it and/or modify
-Â * it under the terms of the GNU General Public License as published by
-Â * the Free Software Foundation; either version 3 of the License, or
-Â * (at your option) any later version.
-Â *
-Â * This program is distributed in the hope that it will be useful,
-Â * but WITHOUT ANY WARRANTY; without even the implied warranty of
-Â * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.Â  See the
-Â * GNU General Public License for more details.
-Â *
-Â * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
+ * TrashOut is an environmental project that teaches people how to recycle 
+ * and showcases the worst way of handling waste - illegal dumping. All you need is a smart phone.
+ *
+ *
+ * There are 10 types of programmers - those who are helping TrashOut and those who are not.
+ * Clean up our code, so we can clean up our planet. 
+ * Get in touch with us: help@trashout.ngo
+ *
+ * Copyright 2017 TrashOut, n.f.
+ *
+ * This file is part of the TrashOut project.
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
 */
 
 
@@ -398,8 +398,7 @@
           options = $.extend({}, cfg, {
             title: title,
             legend: {
-              position: 'bottom',
-              alignment: 'center'
+              position: 'right'
             }
           });
           chart = new google.visualization.PieChart(document.getElementById(id));
