@@ -181,7 +181,7 @@
         $panel.append($box);
         $(self.config.widget.id).find('.panels-wrapper.info').append($panel);
         opts = self.config.map.options;
-        return $('.mini-map').html('<iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBQa-0pghBXFAOjvvWGfIieQcTvMAefNPY&q=' + event.gps.lat + ',' + event.gps.long + '&zoom=' + opts.zoom + '" allowfullscreen></iframe>');
+        return $('.mini-map').html('<iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCiWJGftXWabPAMlDciNS-8zkDaAXaUMS0&q=' + event.gps.lat + ',' + event.gps.long + '&zoom=' + opts.zoom + '" allowfullscreen></iframe>');
       },
       renderListOfDumps: function() {
         var $box, $box1, $box2, $box3, $panel, $panel1, $panel2, $panel3, cfg, event, trashPoints;

@@ -149,7 +149,7 @@
       $(self.config.widget.id).find('.panels-wrapper.info').append($panel)
 
       opts = self.config.map.options
-      #$map = $('<img/>', {'src': 'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBQa-0pghBXFAOjvvWGfIieQcTvMAefNPY&center=' + event.gps.lat + ',' + event.gps.long + '&zoom=' + opts.zoom + '&size=' + opts.size.w + 'x' + opts.size.h + '&maptype=roadmap&markers=color:green|' + event.gps.lat + ',' + event.gps.long})
+      #$map = $('<img/>', {'src': 'https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyCiWJGftXWabPAMlDciNS-8zkDaAXaUMS0&center=' + event.gps.lat + ',' + event.gps.long + '&zoom=' + opts.zoom + '&size=' + opts.size.w + 'x' + opts.size.h + '&maptype=roadmap&markers=color:green|' + event.gps.lat + ',' + event.gps.long})
       #$('.mini-map').append $('<a/>', {'href': directionURL, 'target': '_blank', 'html': $map})
       $('.mini-map').html('<iframe width="600" height="450" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyBQa-0pghBXFAOjvvWGfIieQcTvMAefNPY&q=' + event.gps.lat + ',' + event.gps.long + '&zoom=' + opts.zoom + '" allowfullscreen></iframe>')
 
