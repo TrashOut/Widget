@@ -255,7 +255,7 @@
       $panel.append $('<h2/>', {'html': i18n('trash.history')})
       $whiteBox = $('<div/>', {'class': 'white-box'})
 
-      lastStatus = 
+      lastStatus =
         name: if trashDetail.status == 'stillHere' then 'trash.created' else 'trash.status.' + trashDetail.status
         icon: if trashDetail.status == 'stillHere' then 'reported' else (if trashDetail.status == 'cleaned' then 'cleaned' else 'updated')
 
@@ -325,6 +325,8 @@
     # @desctiption - Render HTML markup for Municipality panel
     # @return null
     renderMunicipality: () ->
+      cfg = $.fn.config('system.admin')
+
       trash = self.data.object
 
       $panel = $('<div/>', {'class': 'panel'})
@@ -332,7 +334,7 @@
 
       $box = $('<div/>', {'class': 'grey-box'})
       $box.append $('<p/>', {'class': 'grey', 'html': i18n('trash.detail.municipalityText')})
-      $box.append $('<a/>', {'class': 'button green', 'html': i18n('trash.detail.sendNotification'), 'href': 'mailto:?subject=' + i18n('mail.report.subject') + '&body=' + i18n('mail.report.body')})
+      $box.append $('<a/>', {'class': 'button green', 'html': i18n('trash.detail.sendNotification'), 'href': 'mailto:?subject=' + i18n('mail.report.subject') + '&body=' + i18n('mail.report.body') + ' ' + cfg.domain + cfg.endpoints.trashDetail + trash.id})
 
       $panel.append $box
 
