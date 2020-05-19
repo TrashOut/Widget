@@ -5,15 +5,16 @@ var querystring = require('querystring');
 
 program.version('1.0.0')
 	.option('-p, --projectId [type]', 'projectId', "97547")
+	.option('-t, --token [type]', 'token')
 	.parse(process.argv);
 
-downloadData(program.projectId, program.language);
+downloadData(program.projectId, program.language, program.token);
 
 
-function downloadData(projectId, language) {
+function downloadData(projectId, language, token) {
 
 	var data_tokenId = {
-		api_token: 'fcf881851eace6b5015371bda2babe11',
+		api_token: token,
 		id: projectId,
 	}
 	var postData_languages = querystring.stringify(data_tokenId);
@@ -26,7 +27,7 @@ function downloadData(projectId, language) {
 			var lang_code = languages[id].code;
 
 			var data_tokenIdLanguage = {
-				api_token: 'fcf881851eace6b5015371bda2babe11',
+				api_token: token,
 				id: projectId,
 				language: lang_code
 			}
