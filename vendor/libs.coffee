@@ -186,18 +186,16 @@
       if (cleaned == 0) and (stillHere + moreLess > 0)
         index = 8 # RRR
     else if updateNeeded == (stillHere + moreLess + cleaned)
-      index = 10 # YYY
+      index = 8 # RRR
     else
       if cleaned >= updateNeeded
-        index = 5 # GGY
+        index = 4 # GGR
       else if (cleaned > 0) and (updateNeeded > cleaned)
-        index = 6 # YYG
-      else if ((stillHere + moreLess - updateNeeded) >= updateNeeded) and (cleaned == 0)
-        index = 3 # RRY
-      else if ((stillHere + moreLess - updateNeeded) < updateNeeded) and (cleaned == 0)
-        index = 7 # YYR
+        index = 2 # RRG
+      else if cleaned == 0
+        index = 8 # RRR
       else
-        index = 1 # YGR
+        index = 2 # RRG
 
     # index of icon
     return index
