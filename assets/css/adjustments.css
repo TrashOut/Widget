@@ -154,10 +154,6 @@ iframe {
 	border: none !important;
 }
 
-#trash-map iframe {
-  margin-top: 3px;
-}
-
 #trash-map iframe,
 #trash-map #trashdetail-widget {
 	top: 0px;
