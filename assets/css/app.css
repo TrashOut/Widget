@@ -599,6 +599,16 @@ input[type=range]:focus::-ms-fill-upper {
 }
 #map {
   height: 500px;
+  background: #8cc947 url("../images/premap_background.jpg") right bottom no-repeat;
+}
+#init {
+  height: 100%;
+  background: rgba(158,151,157,0.68);
+  text-align: center;
+  padding-top: 220px;
+  font-size: 24px;
+  color: white;
+  cursor: pointer;
 }
 @media (max-width: 640px) {
   #filter-button {

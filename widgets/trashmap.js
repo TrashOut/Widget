@@ -1,51 +1,53 @@
-/**
-Â *Â TrashOut is an environmental project that teaches people how to recycleÂ 
-Â * and showcases the worst way of handling waste - illegal dumping.Â All you need is a smart phone.
-Â *
-Â *
-Â *Â There are 10 types of programmers - those who are helping TrashOut and those who are not.
-Â *Â Clean up our code, so we can clean up our planet.Â 
-Â * Get in touch with us: help@trashout.ngo
-Â *
-Â * Copyright 2017 TrashOut, n.f.
-Â *
-Â * This file is part of the TrashOut project.
-Â *
-Â * This program is free software; you can redistribute it and/or modify
-Â * it under the terms of the GNU General Public License as published by
-Â * the Free Software Foundation; either version 3 of the License, or
-Â * (at your option) any later version.
-Â *
-Â * This program is distributed in the hope that it will be useful,
-Â * but WITHOUT ANY WARRANTY; without even the implied warranty of
-Â * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.Â  See the
-Â * GNU General Public License for more details.
-Â *
-Â * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
-*/
-
-
 (function() {
+  /**
+   * TrashOut is an environmental project that teaches people how to recycle 
+   * and showcases the worst way of handling waste - illegal dumping. All you need is a smart phone.
+   *
+   *
+   * There are 10 types of programmers - those who are helping TrashOut and those who are not.
+   * Clean up our code, so we can clean up our planet. 
+   * Get in touch with us: help@trashout.ngo
+   *
+   * Copyright 2017 TrashOut, n.f.
+   *
+   * This file is part of the TrashOut project.
+   *
+   * This program is free software; you can redistribute it and/or modify
+   * it under the terms of the GNU General Public License as published by
+   * the Free Software Foundation; either version 3 of the License, or
+   * (at your option) any later version.
+   *
+   * This program is distributed in the hope that it will be useful,
+   * but WITHOUT ANY WARRANTY; without even the implied warranty of
+   * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   * GNU General Public License for more details.
+   *
+   * See the GNU General Public License for more details: <https://www.gnu.org/licenses/>.
+   */
   (function($, window, document) {
     var TrashMap, self;
+    // the TrashMap constructor
     TrashMap = function(elem, options) {
       this.elem = elem;
       this.$elem = $(elem);
       this.options = options;
+      // customization via Query params
       this.metadata = $.fn.getQueryObject();
     };
+    // the TrashMap prototype skelet
     self = this;
     TrashMap.prototype = {
+      // widget config variables
       defaults: {
         widget: {
-          id: '#trash-map'
+          id: '#trash-map' // main trashmap div#id
         },
         trashDetail: {
-          id: '#trashdetail-widget'
+          id: '#trashdetail-widget' // TrashMap includes TrashDetail widget via iframe
         },
         filter: {
-          id: '#trash-map-filter',
-          structure: {
+          id: '#trash-map-filter', // filter div#id
+          structure: { // filter structure, it has to be same as list of values in API
             status: {
               'reported': {
                 name: 'trash.created'
@@ -162,57 +164,75 @@
           }
         },
         map: {
-          id: '#map',
-          options: {
-            center: [48.8620722, 2.352047],
-            zoom: 5,
-            minZoom: 4,
-            mapTypeId: google.maps.MapTypeId.TERRAIN,
-            mapTypeControl: false,
-            navigationControl: true,
-            scrollwheel: true,
-            streetViewControl: false,
-            styles: [
+          id: '#map', // trashmap div#id
+          options: { // classic google mas options
+            center: [
+              48.8620722,
+              2.352047 // the initial Map center
+            ],
+            zoom: 5, // initial zoom level
+            minZoom: 4, // the minimum zoom level which will be displayed on the map. If omitted, or set to null, the minimum zoom from the current map type is used instead
+            mapTypeId: 'terrain', // the initial Map mapTypeId. Defaults to ROADMAP
+            mapTypeControl: false, // the initial enabled/disabled state of the Map type control
+            navigationControl: true, // the initial enabled/disabled state of the Navigation type control
+            scrollwheel: true, // if false, disables scrollwheel zooming on the map
+            streetViewControl: false, // the initial enabled/disabled state of the Street View Pegman control
+            styles: [ // special style - disable points and other annoying stuff
               {
-                featureType: 'poi',
-                elementType: 'labels',
+                featureType: 'poi', // the feature, or group of features, to which a styler should be applied
+                elementType: 'labels', // the element to which a styler should be applied
                 stylers: [
                   {
-                    visibility: 'off'
+                    visibility: 'off' // the style rules to apply to the selected map features and elements. The rules are applied in the order that you specify in this array
                   }
                 ]
               }
             ]
           },
           cluster: {
-            imagePath: $.fn.config('system.paths.images') + '/trashmap/cluster/m',
-            minimumClusterSize: 2,
-            zoomOnClick: true,
-            averageCenter: true
+            imagePath: $.fn.config('system.paths.images') + '/trashmap/cluster/m', // default imagepath where markers are stored
+            minimumClusterSize: 2, // The minimum number of markers to be in a cluster before the markers are hidden and a count is shown.
+            zoomOnClick: true, // Whether the default behaviour of clicking on a cluster is to zoom into it.
+            averageCenter: true //  Whether the center of each cluster should be the average of all markers in the cluster.
           },
-          zoomDelimiter: 10
+          zoomDelimiter: 10 // When current zoom <= zoomDelimiter drawZoomPoints, when zoom > zoomDelimiter drawTrashList
         }
       },
       map: {
-        object: null,
-        cluster: null,
-        markers: [],
-        initialize: false
+        object: null, // gmap3 object
+        cluster: null, // gmap clustered marker object
+        markers: [], // array of markers in current viewport in map
+        initialize: false // is inicialized?
       },
-      data: {
-        trashlist: [],
-        trashlistGeocells: [],
-        zoompoints: []
+      data: { // local cache
+        trashlist: [], // array of trashlist object
+        trashlistGeocells: [], // array of geocell object (I want to know what geocell has been loaded because I dont want to call server again)
+        zoompoints: [] // array of zoompoints object
       },
       init: function() {
+        // Introduce defaults that can be extended either globally or using an object literal.
         this.config = $.extend({}, this.defaults, this.options, this.metadata);
         self = this;
         this.initI18n();
         this.initLoader();
-        this.initMap();
         this.initFilter();
         this.initMessages();
+        // Lazy loading map (by user click)
+        $('#init').html(i18n('user.widget.trashMapInit'));
+        $('#init').on('click', function() {
+          self.initPreMap();
+          return $('#filter-button').removeClass('hide');
+        });
         return this;
+      },
+      initPreMap: function() {
+        var script;
+        script = document.createElement('script');
+        script.src = 'https://maps.google.com/maps/api/js?key=AIzaSyCiWJGftXWabPAMlDciNS-8zkDaAXaUMS0';
+        script.onload = function() {
+          return self.initMap();
+        };
+        return document.head.appendChild(script);
       },
       initMessages: function() {
         var eventMethod, eventer, messageEvent;
@@ -234,11 +254,18 @@
           $widget.addClass('hidden-right');
         }, false);
       },
+      // @method initMap
+      // @desctiption - complete widget / map initialization
+      // @return null
       initMap: function() {
+        // init jquery object
         this.map.object = $(this.config.map.id);
+        // load map config from URL hash params
         this.loadMap();
+        // create gmap3 plugin object
         this.map.object.gmap3(this.config.map.options).on({
           tilesloaded: function() {
+            // set this variable to true so this will not fire up again
             if (self.map.initialize === false) {
               self.map.initialize = true;
               self.updateMap();
@@ -254,23 +281,38 @@
             self.updateMap();
           }
         });
+        // set map type - when loading from config
         this.setMapType();
       },
+      // @method loadMap
+      // @desctiption - load map config from URL
+      // @return null
       loadMap: function() {
         var data;
-        data = self.parseURL();
+        data = self.parseURL(); // parse map data from URL
+        
+        // deserialize data from URL and load them to form
+        // choosed pinId
+        //if data.length >= 4 and typeof data[3] != 'undefined'
+
+        // zoom
         if (data.length >= 3 && typeof data[2] !== 'undefined') {
           self.config.map.options.zoom = parseInt(data[2]);
         }
+        // gps position
         if (data.length >= 2 && typeof data[1] !== 'undefined' && typeof data[0] !== 'undefined') {
           return self.config.map.options.center = [data[0], data[1]];
         }
       },
+      // @method addMarkers
+      // @desctiption - add cluster to trashmap. Don't use gmap3().cluster() because of performance issues
+      // @return {Boolean} Returns true on success
       addMarkers: function() {
         var currenZoom, i, index, map, marker, marker_icon, obj, tmpData;
         map = self.map.object.gmap3().get(0);
         currenZoom = map.getZoom();
         tmpData = self.data.zoompoints[currenZoom];
+// console.log tmpData
         for (i in tmpData) {
           obj = tmpData[i];
           if (obj.hasOwnProperty('counts')) {
@@ -286,6 +328,7 @@
                 anchor: new google.maps.Point(30, 30)
               }
             });
+            // zoom and center map to marker
             marker.addListener('click', function() {
               map.setZoom(map.getZoom() + 2);
               return map.setCenter(this.position);
@@ -295,11 +338,12 @@
         }
         return true;
       },
-      addCluster: function(data, init) {
+      // @method addCluster
+      // @desctiption - add cluster to trashmap. Don't use gmap3().cluster() because of performance issues
+      // @param {boolean} init - kdyz jsem na pokraji zoomu a prechazim mezi trashy/zoompointy, tak inicializuju cele z cache
+      // @return {Boolean} Returns true on success
+      addCluster: function(data, init = false) {
         var i, marker, markers, obj, styles;
-        if (init == null) {
-          init = false;
-        }
         markers = [];
         for (i in data) {
           obj = data[i];
@@ -333,50 +377,60 @@
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '0.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '1.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '2.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '3.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '4.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '5.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '6.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '7.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '8.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '9.png'
-          }, {
+          },
+          {
             width: 60,
             height: 60,
             url: self.config.map.cluster.imagePath + '10.png'
           }
         ];
         if (self.map.cluster === null) {
-          MarkerClusterer.prototype.setCalculator($.fn.customCalculator);
+          MarkerClusterer.prototype.setCalculator($.fn.customCalculator); //set custom calculator
           self.map.cluster = new MarkerClusterer(self.map.object.gmap3().get(0), markers, {
             styles: styles
           });
@@ -386,6 +440,9 @@
         self.applyFilterTrashList();
         return true;
       },
+      // @method setMapType
+      // @desctiption - Set map type based on current map zoom
+      // @return null
       setMapType: function() {
         var map, zoom;
         map = self.map.object.gmap3().get(0);
@@ -398,21 +455,29 @@
           return map.setMapTypeId(google.maps.MapTypeId.HYBRID);
         }
       },
+      // @method getTrashList
+      // @desctiption - Get trashlist data from server
+      // @param {array} geocells - list of given geocells
+      // @return {boolean} null / false when something went wrong
       getTrashList: function(geocells) {
         var cfg, query;
+        // test attributes
         if (geocells === null || geocells.length === 0) {
           return false;
         }
         $.each(geocells, function(key, obj) {
           return self.data.trashlistGeocells[obj] = {};
         });
+        // get global widget config (API)
         cfg = $.fn.config('system.api');
+        // prepare ajax params
         query = {
           attributesNeeded: 'id,status,types,size,updateNeeded,gpsShort,created,note,accessibility,updateTime',
           geocells: geocells.join(),
           limit: 10000,
           page: 1
         };
+        // get trash list from API
         return $.ajax({
           url: cfg.domain + cfg.endpoints.trashList + '?' + $.param(query),
           async: true,
@@ -420,28 +485,53 @@
             'x-api-key': self.config.key
           }
         }).done(function(data) {
+          //console.log 'getTrashList', data
           $.each(data, function(key, obj) {
             return self.data.trashlistGeocells[obj.geocell] = {};
           });
           self.addCluster(data);
         }).fail(function() {
+          // when ajax call fails, delete all pre-cached data
           $.each(geocells, function(key, obj) {
             return delete self.data.trashlistGeocells[obj];
           });
         });
       },
+      // @method processTrashListResponse
+      // @desctiption -
+      // @param {object} API response
+      // @return null
       processTrashListResponse: function(response) {},
+      // @method drawTrashList
+      // @desctiption - draw list of trashes on map
+      // @return {array} of trash object
       drawTrashList: function() {
         var data, geocells;
+        // todo: budeme prekreslovat pouze, kdyz nacitame nove geocelly - ze zacatku nacachuje vetsi mnostvi, nez skutecne mame, aby se dalo jednoduse posouvat po mape
+        //console.log 'drawTrashList'
+
+        // init cluster with data in local cache
+        // when I have some data in cache and Iam on zoom delimiter
         if (self.data.trashlist.length > 0 && self.map.cluster === null) {
           self.clearMap();
           self.addCluster(self.data.trashlist, true);
         }
+        //console.log 'vykresluji', self.data.trashlist
+
+        // ask server only for geocells which I have not in local storage (cache)
+        //console.log 'needed', self.getGeocells()
         geocells = self.filterGeocellsTrashList(self.getGeocells());
+        //console.log 'missing', geocells
         return data = self.getTrashList(geocells);
       },
+      // @method getZoomPoints
+      // @desctiption - receive list of ZoomPoints from API for given zoomLevel and inside geocells area
+      // @param {int} zoomLevel Required zoom level
+      // @param {array of string} geocells Array of geocells which I want data for
+      // @return {Boolean} Returns true on success
       getZoomPoints: function(zoomLevel, geocells) {
-        var cfg, filter, query, _days, _states;
+        var _days, _states, cfg, filter, query;
+        // test attributes
         if (zoomLevel === null || geocells === null || geocells.length === 0) {
           return false;
         }
@@ -451,11 +541,14 @@
         $.each(geocells, function(key, obj) {
           return self.data.zoompoints[zoomLevel][obj] = {};
         });
+        // get global widget config (API)
         cfg = $.fn.config('system.api');
+        // prepare ajax params
         query = {
           zoomLevel: zoomLevel,
           geocells: geocells.join()
         };
+        // apply filter    TODO: filter
         filter = self.getFilterData();
         if (filter && filter.hasOwnProperty('filter-size')) {
           query.trashSize = filter['filter-size'].join();
@@ -490,6 +583,7 @@
           query.trashType = filter['filter-type'].join();
         }
         if (filter && filter.hasOwnProperty('filter-last') && parseInt(filter['filter-last']) > 0) {
+          // 25 - last year, 50 - last month, 75 - last week, 100 - today
           _days = 365;
           if (parseInt(filter['filter-last']) === 50) {
             _days = 31;
@@ -504,6 +598,7 @@
           query.timeBoundaryTo = moment().format();
           console.log(query);
         }
+        // get trash list from API
         return $.ajax({
           url: cfg.domain + cfg.endpoints.zoomPoints + '?' + $.param(query),
           async: true,
@@ -517,44 +612,61 @@
           self.updateMap();
           return true;
         }).fail(function() {
+          // when ajax call fails, delete all pre-cached data
           $.each(geocells, function(key, obj) {
             return delete self.data.zoompoints[zoomLevel][obj];
           });
           return true;
         });
       },
+      // @method processZoomPointsResponse
+      // @desctiption -
+      // @param {object} API response
+      // @return null
       processZoomPointsResponse: function(response) {},
+      // @method drawZoomPoints
+      // @desctiption - draw zoom points on map
+      // @return {Boolean} Returns true on success
       drawZoomPoints: function() {
         var geocells, map;
+        //console.log 'drawZoomPoints'
         map = self.map.object.gmap3().get(0);
+        // ask server only for geocells which I have not in local storage (cache)
+        //console.log 'needed', self.getGeocells()
         geocells = self.filterGeocellsZoomPoints(map.getZoom(), self.getGeocells());
+        //console.log 'missing', geocells
         self.getZoomPoints(map.getZoom(), geocells);
         return self.addMarkers();
       },
-      updateMap: function(clear) {
+      // @method updateMap
+      // @desctiption - re-draw all clusters / markers, depends on current zoom level
+      // @return {Boolean} null / false when something wrong
+      updateMap: function(clear = true) {
         var map;
-        if (clear == null) {
-          clear = true;
-        }
         if (!self.map.initialize) {
           return false;
         }
-        map = this.map.object.gmap3().get(0);
+        map = this.map.object.gmap3().get(0); // get google maps object
         if (map.getZoom() <= this.config.map.zoomDelimiter) {
-          if (clear) {
-            self.clearMap();
+          if (clear) { // clear map directly only in zoompoints mode
+            self.clearMap(); // todo: CLEAR by se mel asi pote volat jen v pripadech, kdy uz jsem mimo areu nebo pri zoomovani
           }
           return this.drawZoomPoints();
         } else {
+          // clear cluster data
+          //self.map.cluster = null
           self.clearMap('zoompoint');
           return this.drawTrashList();
         }
       },
-      clearMap: function(type) {
+      //@applyFilterTrashList()
+
+      // @method clearMap
+      // @desctiption - delete all maps elements
+      // @param type {string} - all / trash / zoompoint
+      // @return {Boolean} Returns true on success
+      clearMap: function(type = 'all') {
         var i;
-        if (type == null) {
-          type = 'all';
-        }
         if (type === 'all' || type === 'trash') {
           if (self.map.cluster) {
             self.map.cluster.clearMarkers();
@@ -572,34 +684,52 @@
           }
         }
       },
+      // @method updateURL
+      // @desctiption - Set data to URL - current / iframe
+      // @return null
       updateURL: function() {
         var hash, map;
-        map = this.map.object.gmap3().get(0);
+        map = this.map.object.gmap3().get(0); // get google maps object
         hash = "#" + $.fn.round(map.getCenter().lat(), 6) + ";" + $.fn.round(map.getCenter().lng(), 6) + ";" + map.getZoom() + ";" + 'false;' + $('#trash-map-filter-form').serialize();
         return window.location.hash = hash;
       },
+      // @method parseURL
+      // @desctiption - Parse URL (check iframe / current URL) and get data.
+      // @return {array} parsed data
       parseURL: function() {
         var data, hash;
         hash = window.location.hash;
+        // clean hash
         if (hash.charAt(0) === '#') {
           hash = hash.slice(1);
         }
+        // create array from hash string
         data = hash.split(';');
         return data;
       },
+      // @method initLoader
+      // @desctiption - Prepare ajax loader (spinner)
+      // @return null
       initLoader: function() {
+        // this will be called when ALL running AJAX calls have completed
         $(document).ajaxStart(function() {
           return $('.spinner').removeClass('hide');
         });
+        // this will be called when ANY AJAX call have started
         return $(document).ajaxStop(function() {
           return $('.spinner').addClass('hide');
         });
       },
+      // @method initI18n
+      // @desctiption - Prepare translation module
+      // @return null
       initI18n: function() {
         var lang;
+        // detect language
         lang = self.config.language || navigator.language || navigator.userLanguage || 'en';
         lang.substr(0, 2).toLowerCase();
         moment.locale(lang);
+        // set i18n enviroment
         return i18nLoadLanguages(lang);
       },
       getMarkerIcon: function(status, updateNeeded) {
@@ -613,6 +743,9 @@
           return imgPath + 'map_reported.png';
         }
       },
+      // @method sampleMethod
+      // @description Method for testing purpose. This can interpolate two geocells.
+      // @return null
       sampleMethod: function() {
         var Geomodel, bb, geocell1, geocell2, geocells1, geocells2;
         Geomodel = create_geomodel();
@@ -625,6 +758,11 @@
         bb = Geomodel.interpolate(geocell1, geocell2);
         console.log(bb);
       },
+      // @method filterGeocellsZoomPoints
+      // @description filter geocells which we still have in cache
+      // @param {int} zoom - current zoom level
+      // @param {array} geocells - list of geocells for filtering
+      // @return {array} of new geocells (which are not in local cache)
       filterGeocellsZoomPoints: function(zoom, geocells) {
         var result;
         result = [];
@@ -637,6 +775,10 @@
         });
         return result;
       },
+      // @method filterGeocellsTrashList
+      // @description filter geocells which we still have in cache
+      // @param {array} geocells - list of geocells for filtering
+      // @return {array} of new geocells (which are not in local cache)
       filterGeocellsTrashList: function(geocells) {
         var result;
         result = [];
@@ -647,40 +789,60 @@
         });
         return result;
       },
+      // @method getGeocells
+      // @description Return list of geocells based on current map view. This method interpolate geocells from NorthEast to SouthWest corner
+      // @param {int} zoom
+      // @return {array} of geocells object
       getGeocells: function() {
         var Geomodel, bb, geocell1, geocell2, geocells1, geocells2, map, ne, sw, zoom;
         if (!self.map.initialize) {
           return false;
         }
-        map = this.map.object.gmap3().get(0);
+        map = this.map.object.gmap3().get(0); // get google maps object
         zoom = map.getZoom();
         Geomodel = create_geomodel();
+        // console.log map.getZoom()
+        // console.log map.getBounds()
+
+        // generate geocells for given point (gps - top right - north east)
         ne = map.getBounds().getNorthEast();
         geocells1 = Geomodel.generate_geocells(Geomodel.create_point(ne.lat(), ne.lng()));
+        // get first geocell for given resolution based on current zoom level
         geocell1 = geocells1[this.getGeocellResolution(zoom)];
+        // generate geocells for given point (gps - bottom left - south west)
         sw = map.getBounds().getSouthWest();
         geocells2 = Geomodel.generate_geocells(Geomodel.create_point(sw.lat(), sw.lng()));
+        // get second geocell for given resolution based on current zoom level
         geocell2 = geocells2[this.getGeocellResolution(zoom)];
+        // get list of geocells between this two geopoints
         bb = Geomodel.interpolate(geocell1, geocell2);
         if (this.config.debug) {
           console.log('getGeocells:', bb);
         }
         return bb;
       },
+      // @method initFilter
+      // @desctiption - initialize filter: render HTML skelet and set input variables to current values (based on current url)
+      // @return null
       initFilter: function() {
         self.renderFilter();
         return self.loadFilter();
       },
+      // @method renderFilter
+      // @desctiption - Render HTML skelet for map filter. Input options is based on widget settings property
+      // @return null
       renderFilter: function() {
         var $accessibilityWrapper, $headerWrapper, $heading, $lastWrapper, $lastWrapperContent, $sizeWrapper, $statusWrapper, $typeWrapper, structure;
         structure = self.config.filter.structure;
         $heading = $('.widget-heading').html(i18n('user.widget.trashMap'));
+        // change filter is hidden by config
         if (typeof self.config.hidefilter !== 'undefined') {
           $('#filter-button').addClass('hide');
         }
         $headerWrapper = $('<h2/>', {
           'html': '<span id="close-filter"></span>' + i18n('global.filter') + '<span id="update-filter"></span>'
         });
+        // render status
         $statusWrapper = $('<div/>', {
           'class': 'filter-wrapper'
         });
@@ -700,6 +862,7 @@
             'html': i18n(object.name)
           }));
         });
+        // render lastUpdate
         $lastWrapper = $('<div/>', {
           'class': 'filter-wrapper'
         });
@@ -725,6 +888,7 @@
           }));
         });
         $lastWrapperContent.appendTo($lastWrapper);
+        // render size
         $sizeWrapper = $('<div/>', {
           'class': 'filter-wrapper'
         });
@@ -746,6 +910,7 @@
             'class': 'ico ico-' + object.icon + ' ' + object.css
           }));
         });
+        // render type
         $typeWrapper = $('<div/>', {
           'class': 'filter-wrapper'
         });
@@ -767,6 +932,7 @@
             'class': 'ico ico-' + object.icon
           }));
         });
+        // render accessibility
         $accessibilityWrapper = $('<div/>', {
           'class': 'filter-wrapper filter-checkcs'
         });
@@ -789,31 +955,42 @@
           }));
         });
         $(self.config.filter.id).append($headerWrapper).append($statusWrapper).append($lastWrapper).append($sizeWrapper).append($typeWrapper).append($accessibilityWrapper);
+        // open button
         $('#filter-button').on('click', function() {
           return $(self.config.widget.id).addClass('filter-visible');
         });
+        // close button
         $('#close-filter').on('click', function() {
           $(self.config.widget.id).removeClass('filter-visible');
           return self.loadFilter();
         });
+        // update-filter button
         $('#update-filter').on('click', function() {
           self.updateURL();
+          // update and clear map, clear cache, update zoompoint with filter
           self.data.zoompoints = [];
           self.updateMap();
+          // nastavime filter pro pripadne trashlisty
           self.applyFilterTrashList();
           return $(self.config.widget.id).removeClass('filter-visible');
         });
+        //console.log $('#trash-map-filter-form').serialize()
+
+        // because we want to uncheck radiobox
         $('input[type="radio"]').on('click', function() {
           var $radio;
           $radio = $(this);
+          // if this was previously checked
           if ($radio.data('waschecked') === true) {
             $radio.prop('checked', false);
             $radio.data('waschecked', false);
           } else {
             $radio.data('waschecked', true);
           }
+          // remove was checked from other radios
           return $radio.siblings('input[type="radio"]').data('waschecked', false);
         });
+        // update range plugin
         $('input[type="range"]').on('change mousemove', function() {
           var $this, val;
           $this = $(this);
@@ -821,20 +998,29 @@
           return $this.css('background-image', '-webkit-gradient(linear, left top, right top, ' + 'color-stop(' + val + ', #dedede), ' + 'color-stop(' + val + ', #8cc947)' + ')');
         });
       },
+      // @method loadFilter
+      // @desctiption - Load current filter settings from current URL to Filter form and init input values
+      // @return null
+      //console.log $(self.config.filter.id).html()
       loadFilter: function() {
         var $form, data;
-        data = self.parseURL();
+        data = self.parseURL(); // parse filter data from URL
         $form = $('#trash-map-filter-form');
+        // deserialize data from URL and load them to form
         if (data.length >= 5 && typeof data[4] !== 'undefined' && data[4] !== '') {
           $form.deserialize(data[4]);
         } else {
+          // clean form
           $form[0].reset();
         }
         return $('input[type="range"]').trigger('change');
       },
+      // @method getFilterData
+      // @desctiption - Get current filter settings from current URL
+      // @return {object} - parsed data in object structure
       getFilterData: function() {
         var data, parsed;
-        data = self.parseURL();
+        data = self.parseURL(); // save to cache
         if (data.length >= 5 && typeof data[4] !== 'undefined' && data[4] !== '') {
           parsed = $.parseParams('?' + data[4]);
           return parsed;
@@ -842,8 +1028,11 @@
           return null;
         }
       },
+      // @method applyFilterTrashList   TODO: filter
+      // @desctiption - Show/hide markers on map after setting new parameters in map filter
+      // @return null
       applyFilterTrashList: function() {
-        var data, filter, i, obj, tmpData, visibility, _accessibility, _days, _states, _updateNeeded;
+        var _accessibility, _days, _states, _updateNeeded, data, filter, i, obj, tmpData, visibility;
         data = self.parseURL();
         if (data.length >= 5 && typeof data[4] !== 'undefined' && data[4] !== '') {
           filter = $.parseParams('?' + data[4]);
@@ -857,6 +1046,7 @@
         for (i in tmpData) {
           visibility = true;
           obj = tmpData[i];
+          // console.log obj
           if (typeof filter['filter-size'] !== 'undefined' && $.inArray(obj.data.size, filter['filter-size']) === -1) {
             visibility = false;
           }
@@ -879,11 +1069,13 @@
           if (typeof filter['filter-type'] !== 'undefined' && $.isArray(obj.data.types) && $.fn.arrayIntersect(filter['filter-type'], _.values(obj.data.types)).length === 0) {
             visibility = false;
           }
+          // add more / less under updateNeeded
           if (typeof filter['filter-status'] !== 'undefined' && $.inArray('updateNeeded', filter['filter-status']) > -1) {
             filter['filter-status'].push('more');
             filter['filter-status'].push('less');
           }
           if (typeof filter['filter-last'] !== 'undefined' && parseInt(filter['filter-last']) > 0) {
+            // 25 - last year, 50 - last month, 75 - last week, 100 - today
             _days = 365;
             if (parseInt(filter['filter-last']) === 50) {
               _days = 31;
@@ -928,8 +1120,13 @@
           }
           obj.setVisible(visibility);
         }
+        // because of empty clusters we have to call repaint()
         return self.map.cluster.repaint();
       },
+      // @method showTrashDetail
+      // @desctiption - show TrashDetail widget with given ID
+      // @param {int} id - id of needed trash
+      // @return null
       showTrashDetail: function(id) {
         var $spinner, $trashmap, $widget, lang, wdg;
         wdg = self.config.trashDetail;
@@ -950,6 +1147,16 @@
           return $widget.addClass('hidden-right');
         });
       },
+      // console.log wdg
+
+      // @method getGeocellResolution
+      // @description determine proximity for this zoomlevel, how far away should markers be. Normally at leas 1cm from each other to be clearly visible
+
+      // KM_5000(1), KM_2000(2), KM_500(3), KM_128(4), KM_32(5), KM_8(6), KM_2(7), METERS_500(8), METERS_126(9),
+      // METERS_30(10), METERS_7(11), METERS_2(12), CENTIMETERS(13), MILIMETERS_50(14), MILIMETERS_20(15), MILIMETERS_5(16)
+
+      // @param {int} zoom - current zoom level
+      // @return {integer} geocell proximity
       getGeocellResolution: function(zoom) {
         var fix;
         if (!zoom) {
@@ -973,6 +1180,8 @@
             return 5 + fix;
           case 11:
           case 12:
+            // from this zoomLevel, receiver should ask for TrashList,
+            // because it's used for TrashNearby and can group markers by it's own
             return 6 + fix;
           case 13:
           case 14:
@@ -983,6 +1192,7 @@
           case 17:
           case 18:
             return 9 + fix;
+          // it will not group trashes anymore, so will show all trashes devided for given geocell
           case 19:
           case 20:
           case 21:
@@ -1002,6 +1212,7 @@
         new TrashMap(this, options).init();
       });
     };
+  //optional: window.TrashMap = TrashMap;
   })(jQuery, window, document);
 
   $(function() {
@@ -1009,3 +1220,5 @@
   });
 
 }).call(this);
+
+//# sourceMappingURL=trashmap.js.map

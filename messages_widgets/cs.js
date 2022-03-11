@@ -947,6 +947,7 @@ var i18nLoadLanguages = function (lng) {
 	 	 	 	"user.widget.type": "Typ widgetu",
 	 	 	 	"user.widget.trashDetail": "Detail Skládky",
 	 	 	 	"user.widget.trashMap": "Trash Mapa",
+				"user.widget.trashMapInit": "Klikněte pro zobrazení Trash mapy",
 	 	 	 	"user.widget.eventDetail": "Detail události",
 	 	 	 	"user.widget.trashStatistics": "Statistika skládek",
 	 	 	 	"user.apiKey": "API klíč",

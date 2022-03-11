@@ -134,7 +134,7 @@
           center: [48.8620722, 2.352047] # the initial Map center
           zoom: 5 # initial zoom level
           minZoom: 4 # the minimum zoom level which will be displayed on the map. If omitted, or set to null, the minimum zoom from the current map type is used instead
-          mapTypeId : google.maps.MapTypeId.TERRAIN # the initial Map mapTypeId. Defaults to ROADMAP
+          mapTypeId : 'terrain' # the initial Map mapTypeId. Defaults to ROADMAP
           mapTypeControl : false # the initial enabled/disabled state of the Map type control
           navigationControl : true # the initial enabled/disabled state of the Navigation type control
           scrollwheel : true # if false, disables scrollwheel zooming on the map
@@ -168,12 +168,25 @@
 
       @initI18n()
       @initLoader()
-      @initMap()
       @initFilter()
       @initMessages()
 
+      # Lazy loading map (by user click)
+      $('#init').html(i18n('user.widget.trashMapInit'))
+      $('#init').on 'click', ->
+        self.initPreMap()
+        $('#filter-button').removeClass 'hide'
+
       #@getGeocells()
       this
+
+    initPreMap: ->
+      script = document.createElement('script')
+      script.src = 'https://maps.google.com/maps/api/js?key=AIzaSyCiWJGftXWabPAMlDciNS-8zkDaAXaUMS0';
+      script.onload = ->
+        self.initMap()
+
+      document.head.appendChild(script);
 
     initMessages: ->
       if window.addEventListener

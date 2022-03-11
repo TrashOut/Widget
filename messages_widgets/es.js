@@ -947,6 +947,7 @@ var i18nLoadLanguages = function (lng) {
 	 	 	 	"user.widget.type": "Tipo de widget",
 	 	 	 	"user.widget.trashDetail": "Widget de detalle de la basura",
 	 	 	 	"user.widget.trashMap": "Widget de mapa de basura",
+	 	 	 	"user.widget.trashMapInit": "Haga clic para ver el mapa de basura",
 	 	 	 	"user.widget.eventDetail": "Widget de Detalle del evento",
 	 	 	 	"user.widget.trashStatistics": "Widget de estadísticas de basura",
 	 	 	 	"user.apiKey": "Clave API",

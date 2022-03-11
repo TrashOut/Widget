@@ -947,6 +947,7 @@ var i18nLoadLanguages = function (lng) {
 	 	 	 	"user.widget.type": "Тип виджета",
 	 	 	 	"user.widget.trashDetail": "Виджет подробной информации о свалке",
 	 	 	 	"user.widget.trashMap": "Виджет карты свалки",
+	 	 	 	"user.widget.trashMapInit": "Нажмите, чтобы просмотреть карты свалки",
 	 	 	 	"user.widget.eventDetail": "Виджет подробной информации о мероприятии",
 	 	 	 	"user.widget.trashStatistics": "Виджет статистики свалки",
 	 	 	 	"user.apiKey": "Ключ API",
